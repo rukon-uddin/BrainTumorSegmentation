@@ -303,8 +303,12 @@ def create_dataset_from_patients_directory(patients_directory: str, output_datas
 
             # Extract the patient's id from the directory name
             patient_index = patient_directory_name[-5:]
-            image, mask = get_mri_data_from_directory(patient_path, **mri_data)
-            all_mri_data.append((patient_index, image, mask))
+            try:
+                image, mask = get_mri_data_from_directory(patient_path, **mri_data)
+                all_mri_data.append((patient_index, image, mask))
+            except Exception as e:
+                print(f"Error processing patient {patient_directory_name}: {str(e)}")
+                continue
 
     print("Shuffling MRI Data into Train (80%) and Validation (20%) splits")
     train_mri_data, val_mri_data = random_train_test_split(all_mri_data)
