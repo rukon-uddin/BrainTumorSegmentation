@@ -13,13 +13,13 @@ from utils.optimizers import LH_Adam
 def train(dataset_dir: str, binary_weights_path: str):
     dataset = MRIDataset(binary_dataset_path=dataset_dir)
 
-    batch_size = 2
+    batch_size = 1
     train_img_datagen = dataset.binary_train_datagen(batch_size)
     val_img_datagen = dataset.binary_val_datagen(batch_size)
 
     steps_per_epoch, val_steps_per_epoch = dataset.binary_steps_per_epoch(batch_size)
 
-    n_channels = 20
+    n_channels = 15
     model = binary_model(128, 128, 128, 4, 1, n_channels, activation=ELU())
 
     learning_rate = 0.0003
@@ -27,7 +27,8 @@ def train(dataset_dir: str, binary_weights_path: str):
 
     model.compile(optimizer=optimizer, loss=dice_loss_binary, metrics=[dice_coef])
 
-    checkpoint_callback = ModelCheckpoint(filepath=binary_weights_path, save_weights_only=True, save_best_only=True)
+    # checkpoint_callback = ModelCheckpoint(filepath=binary_weights_path, save_weights_only=True, save_best_only=True)
+    checkpoint_callback = ModelCheckpoint(filepath=binary_weights_path, save_weights_only=True)
 
     model.fit(x=train_img_datagen,
               steps_per_epoch=steps_per_epoch,
