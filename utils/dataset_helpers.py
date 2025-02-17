@@ -45,6 +45,8 @@ def aa(output_dataset_path):
     binary_dataset_path = os.path.join(output_dataset_path, "binary")
     binary_weights_path = os.path.join(binary_dataset_path, "BinaryWeights.hdf5")
     cropped_dataset_path = os.path.join(output_dataset_path, "cropped")
+
+    binary_weights_path = "/content/drive/MyDrive/Fiver_Projects/allu/BinaryWeights.hdf5"
     
     print("\nTraining the Binary Model using the binary dataset")
     train_binary_model(binary_dataset_path, binary_weights_path)
