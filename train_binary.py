@@ -19,7 +19,7 @@ def train(dataset_dir: str, binary_weights_path: str):
 
     steps_per_epoch, val_steps_per_epoch = dataset.binary_steps_per_epoch(batch_size)
 
-    n_channels = 15
+    n_channels = 18
     model = binary_model(128, 128, 128, 4, 1, n_channels, activation=ELU())
 
     learning_rate = 0.0003
