@@ -16,7 +16,7 @@ def create_new_dataset(input_dataset_path: str, output_dataset_path: str) -> MRI
     # binary_weights_path = os.path.join(binary_dataset_path, "BinaryWeights.hdf5")
     cropped_dataset_path = os.path.join(output_dataset_path, "cropped")
 
-    binary_weights_path = "/content/drive/MyDrive/Fiver_Projects/allu/setup/BinaryWeights.hdf5"
+    binary_weights_path = "/content/drive/MyDrive/Fiver_Projects/allu/BinaryWeights.hdf5"
 
     print("Creating NonCropped Dataset From Patient Directory")
     create_dataset_from_patients_directory(input_dataset_path, non_cropped_dataset_path)
@@ -27,7 +27,7 @@ def create_new_dataset(input_dataset_path: str, output_dataset_path: str) -> MRI
     print("\nTraining the Binary Model using the binary dataset")
     train_binary_model(binary_dataset_path, binary_weights_path)
 
-    n_channels = 18
+    n_channels = 20
     model = binary_model(128, 128, 128, 4, 1, n_channels, activation=ELU())
     model.load_weights(binary_weights_path)
 
@@ -43,7 +43,7 @@ def create_new_dataset(input_dataset_path: str, output_dataset_path: str) -> MRI
 def aa(output_dataset_path):
     non_cropped_dataset_path = os.path.join(output_dataset_path, "data")
     binary_dataset_path = os.path.join(output_dataset_path, "binary")
-    binary_weights_path = os.path.join(binary_dataset_path, "BinaryWeights.hdf5")
+    # binary_weights_path = os.path.join(binary_dataset_path, "BinaryWeights.hdf5")
     cropped_dataset_path = os.path.join(output_dataset_path, "cropped")
 
     binary_weights_path = "/content/drive/MyDrive/Fiver_Projects/allu/BinaryWeights.hdf5"
@@ -51,7 +51,7 @@ def aa(output_dataset_path):
     print("\nTraining the Binary Model using the binary dataset")
     train_binary_model(binary_dataset_path, binary_weights_path)
 
-    n_channels = 15
+    n_channels = 20
     model = binary_model(128, 128, 128, 4, 1, n_channels, activation=ELU())
     model.load_weights(binary_weights_path)
 
