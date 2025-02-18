@@ -4,6 +4,7 @@ from glob import glob
 from keras.layers import ELU
 
 from train_binary import train as train_binary_model
+from train_binary import resumeTrain
 from utils.dataset import MRIDataset
 from utils.models import binary_model
 from utils.preprocessing import create_dataset_from_patients_directory, create_binary_dataset_from_dataset, \
@@ -24,23 +25,10 @@ def create_new_dataset(input_dataset_path: str, output_dataset_path: str) -> MRI
     print("\nCreating Binary Dataset From NonCropped Dataset")
     create_binary_dataset_from_dataset(non_cropped_dataset_path, binary_dataset_path)
 
-    print("\nTraining the Binary Model using the binary dataset")
-    train_binary_model(binary_dataset_path, binary_weights_path)
-
-    n_channels = 20
-    model = binary_model(128, 128, 128, 4, 1, n_channels, activation=ELU())
-    model.load_weights(binary_weights_path)
-
-    print("\nCreating Cropped Dataset From NonCropped Dataset using the Binary Model")
-    create_cropped_dataset_from_dataset(non_cropped_dataset_path, model, cropped_dataset_path)
-
-    # Validate the shape and content of the MRI dataset
-    return MRIDataset(non_cropped_dataset_path=non_cropped_dataset_path,
-                      binary_dataset_path=binary_dataset_path,
-                      cropped_dataset_path=cropped_dataset_path)
+    print("Dataset Create Successfully !!")
 
 
-def aa(output_dataset_path):
+def startBinaryTraining(output_dataset_path):
     non_cropped_dataset_path = os.path.join(output_dataset_path, "data")
     binary_dataset_path = os.path.join(output_dataset_path, "binary")
     # binary_weights_path = os.path.join(binary_dataset_path, "BinaryWeights.hdf5")
@@ -49,7 +37,12 @@ def aa(output_dataset_path):
     binary_weights_path = "/content/drive/MyDrive/Fiver_Projects/allu/BinaryWeights.hdf5"
     
     print("\nTraining the Binary Model using the binary dataset")
-    train_binary_model(binary_dataset_path, binary_weights_path)
+
+    if os.path.exists(binary_weights_path):
+        print(f"Resume Training From {binary_weights_path}")
+        resumeTrain(binary_dataset_path, binary_weights_path)
+    else:
+        train_binary_model(binary_dataset_path, binary_weights_path)
 
     n_channels = 20
     model = binary_model(128, 128, 128, 4, 1, n_channels, activation=ELU())
